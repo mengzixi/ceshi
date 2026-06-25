@@ -15,7 +15,6 @@ import 'src/widgets/interner_issue_dialog.dart';
 import 'src/widgets/internet_connectivity.dart';
 import 'constants.dart';
 import 'src/bloc/auth/registration_bloc.dart';
-import 'src/bloc/firebase_auth/firebase_auth_bloc.dart';
 import 'src/screen/login_screen.dart';
 import 'src/server/repository.dart';
 import 'src/services/authentication_service.dart';
@@ -119,7 +118,6 @@ class _MyAppState extends State<MyApp> with AfterLayoutMixin {
         providers: [
           BlocProvider(create: (context) => LoginBloc(Repository())),
           BlocProvider(create: (context) => RegistrationBloc(Repository())),
-          BlocProvider(create: (context) => FirebaseAuthBloc(Repository())),
         ],
         child: MaterialApp(
           title: "Meet Fox",

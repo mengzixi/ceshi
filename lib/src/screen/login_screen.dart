@@ -8,9 +8,6 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:spagreen/src/bloc/auth/login_bloc.dart';
 import 'package:spagreen/src/bloc/auth/login_event.dart';
 import 'package:spagreen/src/bloc/auth/login_state.dart';
-import 'package:spagreen/src/bloc/firebase_auth/firebase_auth_bloc.dart';
-import 'package:spagreen/src/bloc/firebase_auth/firebase_auth_event.dart';
-import 'package:spagreen/src/bloc/firebase_auth/firebase_auth_state.dart';
 import 'package:spagreen/src/models/password_reset_model.dart';
 import 'package:spagreen/src/models/user_model.dart';
 import 'package:spagreen/src/screen/sign_up_screen.dart';
@@ -57,7 +54,6 @@ class _LoginPageState extends State<LoginPage>
   void initState() {
     super.initState();
     bloc = BlocProvider.of<LoginBloc>(context);
-    firebaseAuthBloc = BlocProvider.of<FirebaseAuthBloc>(context);
     _isLogged = false;
   }
 

@@ -10,9 +10,6 @@ import '../utils/localization_helper.dart' as helper;
 import 'package:spagreen/src/bloc/auth/registration_bloc.dart';
 import 'package:spagreen/src/bloc/auth/registration_event.dart';
 import 'package:spagreen/src/bloc/auth/registration_state.dart';
-import 'package:spagreen/src/bloc/firebase_auth/firebase_auth_bloc.dart';
-import 'package:spagreen/src/bloc/firebase_auth/firebase_auth_event.dart';
-import 'package:spagreen/src/bloc/firebase_auth/firebase_auth_state.dart';
 import 'package:spagreen/src/models/get_config_model.dart';
 import 'package:spagreen/src/models/user_model.dart';
 import 'package:spagreen/src/services/authentication_service.dart';
@@ -55,7 +52,6 @@ class _SignUpScreenState extends State<SignUpScreen>
   void initState() {
     super.initState();
     bloc = BlocProvider.of<RegistrationBloc>(context);
-    firebaseAuthBloc = BlocProvider.of<FirebaseAuthBloc>(context);
     _isRegistered = false;
   }
 
