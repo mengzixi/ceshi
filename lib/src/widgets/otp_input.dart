@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
-import 'package:spagreen/src/bloc/phone_auth/phone_auth_bloc.dart';
-import 'package:spagreen/src/bloc/phone_auth/phone_auth_event.dart';
 import 'package:spagreen/src/utils/app_tags.dart';
 import '../button_widget.dart';
 import '../utils/localization_helper.dart' as helper;
-
 
 class OtpInput extends StatelessWidget {
   String? inputPin;
@@ -32,16 +29,12 @@ class OtpInput extends StatelessWidget {
             //     onSubmit: (String pin) {
             //       inputPin = pin;
             //     }),
-              Pinput(
+            Pinput(
                 length: 6,
                 onCompleted: (String pin) {
                   inputPin = pin;
                 }),
             SizedBox(height: 30.0),
-            GestureDetector(
-                onTap: () {
-                  BlocProvider.of<PhoneAuthBloc>(context).add(VerifyOtpEvent(otp: inputPin));},
-                child: HelpMe().submitButton(142, helper.getTranslated(context, AppTags.submit)!,)),
           ],
         ),
       ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:spagreen/src/style/theme.dart';
 import 'package:spagreen/src/utils/ad_helper.dart';
 import 'package:spagreen/src/utils/app_tags.dart';
@@ -16,32 +15,13 @@ class MeetingHistoryWithoutLogin extends StatefulWidget {
 
 class _MeetingHistoryWithoutLoginState
     extends State<MeetingHistoryWithoutLogin> {
-  BannerAd? _bannerAd;
-
   @override
   void initState() {
     super.initState();
-    BannerAd(
-            size: AdSize.banner,
-            adUnitId: AdHelper.bannerAdId,
-            listener: BannerAdListener(
-              onAdLoaded: (ad) {
-                setState(() {
-                  _bannerAd = ad as BannerAd;
-                });
-              },
-              onAdFailedToLoad: (ad, error) {
-                debugPrint('Failed to load a banner ad: ${error.message}');
-                ad.dispose();
-              },
-            ),
-            request: const AdRequest())
-        .load();
   }
 
   @override
   void dispose() {
-    _bannerAd?.dispose();
     super.dispose();
   }
 
@@ -82,13 +62,7 @@ class _MeetingHistoryWithoutLoginState
           ),
         ),
       ),
-      bottomSheet: _bannerAd != null
-          ? SizedBox(
-              width: _bannerAd!.size.width.toDouble(),
-              height: _bannerAd!.size.height.toDouble(),
-              child: AdWidget(ad: _bannerAd!),
-            )
-          : SizedBox(),
+      bottomSheet: SizedBox(),
     );
   }
 }

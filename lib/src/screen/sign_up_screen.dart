@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:spagreen/src/utils/app_tags.dart';
@@ -17,7 +15,6 @@ import 'package:spagreen/src/bloc/firebase_auth/firebase_auth_event.dart';
 import 'package:spagreen/src/bloc/firebase_auth/firebase_auth_state.dart';
 import 'package:spagreen/src/models/get_config_model.dart';
 import 'package:spagreen/src/models/user_model.dart';
-import 'package:spagreen/src/screen/phon_auth_screen.dart';
 import 'package:spagreen/src/services/authentication_service.dart';
 import 'package:spagreen/src/style/theme.dart';
 import 'package:spagreen/src/utils/edit_text_utils.dart';
@@ -28,9 +25,6 @@ import 'package:spagreen/src/widgets/signup_submit_btn.dart';
 import '../../config.dart';
 import 'login_screen.dart';
 import 'main_screen.dart';
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
-final GoogleSignIn _googleSignIn = GoogleSignIn();
 
 class SignUpScreen extends StatefulWidget {
   static final String route = '/SignUpScreen';
@@ -326,26 +320,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                             ////google ,fb and phon auth button
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                if (Config.enableGoogleAuth)
-                                  firebaseAuthWidgets(
-                                      "google", authService, _signInWithGoogle),
-                                if (Config.enableFacebookAuth)
-                                  //   firebaseAuthWidgets("fb",authService,_fbLogin),
-                                  //Phone Auth Available Only for Android
-                                  if (Config.enablePhoneAuth)
-                                    GestureDetector(
-                                      child: googleFbPhoneButton('phone'),
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, PhoneAuthScreen.route);
-                                      },
-                                    ),
-                                if (Platform.isIOS &&
-                                    Config.enableAppleAuthForIOS)
-                                  firebaseAuthWidgets("apple_login_icon",
-                                      authService, _signInWithApple),
-                              ],
+                              children: <Widget>[],
                             ),
                             SizedBox(height: 50.0),
                           ],
@@ -361,145 +336,5 @@ class _SignUpScreenState extends State<SignUpScreen>
         },
       ),
     );
-  }
-
-  Widget firebaseAuthWidgets(String btnTitle, authService, Function function) {
-    return BlocListener<FirebaseAuthBloc, FirebaseAuthState>(
-      listener: (context, state) {
-        if (state is FirebaseAuthStateCompleted) {
-          AuthUser? user = state.getUser;
-          if (user == null) {
-            firebaseAuthBloc.add(FirebaseAuthFailed);
-          }
-          authService.updateUser(user);
-          isLoading = false;
-          if (authService.getUser() != null) {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => MainScreen()),
-                (Route<dynamic> route) => false);
-          }
-        } else if (state is FirebaseAuthFailedState) {
-          firebaseAuthBloc.add(FirebaseAuthNotStarted());
-        }
-      },
-      child: BlocBuilder<FirebaseAuthBloc, FirebaseAuthState>(
-        builder: (context, state) {
-          return GestureDetector(
-              onTap: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                User fbUser = await function();
-                firebaseAuthBloc.add(FirebaseAuthStarted());
-                firebaseAuthBloc.add(FirebaseAuthCompleting(
-                  uid: fbUser.uid,
-                  email: fbUser.email,
-                  phone: fbUser.phoneNumber,
-                ));
-              },
-              child: googleFbPhoneButton(btnTitle));
-        },
-      ),
-    );
-  }
-
-  // ignore: missing_return
-Future<User?> _signInWithGoogle() async {
-  try {
-    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-
-    if (googleUser == null) {
-      // User canceled the sign-in
-      return null;
-    }
-
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    final UserCredential userCredential =
-        await _auth.signInWithCredential(credential);
-
-    final User? user = userCredential.user;
-
-    if (user != null) {
-      assert(!user.isAnonymous);
-      assert(await user.getIdToken() != null);
-      final User? currentUser = _auth.currentUser;
-      assert(user.uid == currentUser?.uid);
-    }
-
-    return user;
-  } catch (e, stack) {
-    debugPrint('Google sign-in error: $e');
-    debugPrint('$stack');
-    return null;
-  }
-}
-
-
-  // ignore: missing_return
-  /* Future<User> _fbLogin() async {
-    final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
-    switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        final FacebookAccessToken accessToken = result.accessToken;
-        final AuthCredential credential = FacebookAuthProvider.credential(accessToken.token);
-        final User user = (await _auth.signInWithCredential(credential)).user;
-        if(user.email != null && user.email != ""){
-          assert(user.email != null);
-        }
-        if(user.phoneNumber != null && user.phoneNumber != ""){
-          assert(user.phoneNumber != null);
-        }
-        assert(user.displayName != null);
-        assert(!user.isAnonymous);
-        assert(await user.getIdToken() != null);
-        final User currentUser = await _auth.currentUser;
-        assert(user.uid == currentUser.uid);
-        if (user != null) return user;
-        break;
-      case FacebookLoginStatus.cancelledByUser:
-        print( helper.getTranslated(context, AppTags.loginCancelled),);
-        return null;
-        break;
-      case FacebookLoginStatus.error:
-        print('Something went wrong with the login process.\n'
-            'Here\'s the error Facebook gave us: ${result.errorMessage}');
-        return null;
-        break;
-    }
-  }*/
-
-// ignore: missing_return
-  Future<User> _signInWithApple() async {
-    final appleCredential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-    );
-    print(appleCredential.authorizationCode);
-    final OAuthProvider oAuthProvider = OAuthProvider('apple.com');
-    final credential = oAuthProvider.credential(
-        idToken: appleCredential.identityToken,
-        accessToken: appleCredential.authorizationCode);
-    final User user = (await _auth.signInWithCredential(credential)).user!;
-    //print(user.email);
-    if (user.email != null && user.email != "") {
-      assert(user.email != null);
-    }
-    if (user.displayName != null && user.displayName != "") {
-      assert(user.displayName != null);
-    }
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-
-    final User currentUser = await _auth.currentUser!;
-    assert(user.uid == currentUser.uid);
-    return user;
   }
 }

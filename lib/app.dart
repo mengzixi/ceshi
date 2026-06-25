@@ -16,14 +16,12 @@ import 'src/widgets/internet_connectivity.dart';
 import 'constants.dart';
 import 'src/bloc/auth/registration_bloc.dart';
 import 'src/bloc/firebase_auth/firebase_auth_bloc.dart';
-import 'src/bloc/phone_auth/phone_auth_bloc.dart';
 import 'src/screen/login_screen.dart';
 import 'src/server/repository.dart';
 import 'src/services/authentication_service.dart';
 import 'src/utils/route.dart';
 import 'src/utils/localization_helper.dart' as helper;
 import 'src/bloc/auth/login_bloc.dart';
-import 'src/server/phone_auth_repository.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class MyApp extends StatefulWidget {
@@ -122,9 +120,6 @@ class _MyAppState extends State<MyApp> with AfterLayoutMixin {
           BlocProvider(create: (context) => LoginBloc(Repository())),
           BlocProvider(create: (context) => RegistrationBloc(Repository())),
           BlocProvider(create: (context) => FirebaseAuthBloc(Repository())),
-          BlocProvider(
-              create: (context) =>
-                  PhoneAuthBloc(userRepository: UserRepository())),
         ],
         child: MaterialApp(
           title: "Meet Fox",

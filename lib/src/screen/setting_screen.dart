@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -39,7 +38,6 @@ class _SettingScreenState extends State<SettingScreen> {
   );
   String? joinWebUrl;
   String? linkMessage;
-  final _auth = FirebaseAuth.instance;
 
   String? selectedLanguage;
 
@@ -203,11 +201,6 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
               ),
               SizedBox(height: 14),
-              sendInvitation(
-                context: context,
-                title: helper.getTranslated(context, AppTags.sendInvitation)!,
-                meetingCode: linkMessage,
-              ),
             ],
           ),
         ),
@@ -358,7 +351,6 @@ class _SettingScreenState extends State<SettingScreen> {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            await _auth.signOut();
                             if (authService.getUser() != null) {
                               authService.deleteUser();
                             }

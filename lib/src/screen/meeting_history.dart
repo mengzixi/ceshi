@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:spagreen/src/models/meeting_history_model.dart';
 import 'package:spagreen/src/models/meeting_mode.dart';
@@ -31,32 +30,14 @@ class MeetingHistoryScreen extends StatefulWidget {
 class _MeetingHistoryScreenState extends State<MeetingHistoryScreen> {
   MeetingModel? joinMeetingResponse;
   AuthUser? authUser;
-  BannerAd? _bannerAd;
 
   @override
   void initState() {
     super.initState();
-    BannerAd(
-            size: AdSize.banner,
-            adUnitId: AdHelper.bannerAdId,
-            listener: BannerAdListener(
-              onAdLoaded: (ad) {
-                setState(() {
-                  _bannerAd = ad as BannerAd;
-                });
-              },
-              onAdFailedToLoad: (ad, error) {
-                debugPrint('Failed to load a banner ad: ${error.message}');
-                ad.dispose();
-              },
-            ),
-            request: const AdRequest())
-        .load();
   }
 
   @override
   void dispose() {
-    _bannerAd?.dispose();
     super.dispose();
   }
 
@@ -79,7 +60,7 @@ class _MeetingHistoryScreenState extends State<MeetingHistoryScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                           SizedBox(height: 60.0),
+                          SizedBox(height: 60.0),
                           Text(
                             helper.getTranslated(
                                 context, AppTags.titleMeetingHistory)!,
@@ -116,13 +97,7 @@ class _MeetingHistoryScreenState extends State<MeetingHistoryScreen> {
           ),
         ),
       ),
-      bottomSheet: _bannerAd != null
-          ? SizedBox(
-              width: _bannerAd!.size.width.toDouble(),
-              height: _bannerAd!.size.height.toDouble(),
-              child: AdWidget(ad: _bannerAd!),
-            )
-          : SizedBox(),
+      bottomSheet: SizedBox(),
     );
   }
 

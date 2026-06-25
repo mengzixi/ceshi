@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jitsi_meet_flutter_sdk/jitsi_meet_flutter_sdk.dart';
@@ -42,26 +41,7 @@ class _HostMettingCardState extends State<HostMeetingCard> {
   String? joinWebUrl;
   String? meetingPrefix;
   String? linkMessage;
-  InterstitialAd? _interstitialAd;
   final JitsiMeet _jitsiMeet = JitsiMeet();
-
-  //!previous
-//  @override
-//   void initState() {
-//     _initPackageInfo();
-//      AppConfig? appConfig = DatabaseService().getConfigData()?.appConfig;
-//     meetingPrefix = appConfig
-//         ?.meetingPrefix;
-//     randomMeetingCode = meetingPrefix! + getRandomString(9);
-//     JitsiMeet.addListener(JitsiMeetingListener(
-//         onConferenceWillJoin: JitsiMeetUtils().onConferenceWillJoin,
-//         onConferenceJoined: JitsiMeetUtils().onConferenceJoined,
-//         onConferenceTerminated: JitsiMeetUtils().onConferenceTerminated,
-//         onError: JitsiMeetUtils().onError));
-
-//     _loadInterstitialAd();
-//     super.initState();
-//   }
   //!Changes
   @override
   void initState() {
@@ -71,8 +51,6 @@ class _HostMettingCardState extends State<HostMeetingCard> {
     AppConfig? appConfig = DatabaseService().getConfigData()?.appConfig;
     meetingPrefix = appConfig?.meetingPrefix;
     randomMeetingCode = meetingPrefix! + getRandomString(9);
-    //joinMeeting();
-    _loadInterstitialAd();
   }
 
   Future<void> joinMeeting() async {
@@ -88,28 +66,6 @@ class _HostMettingCardState extends State<HostMeetingCard> {
     ));
   }
 
-  void _loadInterstitialAd() {
-    _interstitialAd = null;
-    InterstitialAd.load(
-        adUnitId: AdHelper.interstitialAdUnitId,
-        request: const AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (ad) {
-            ad.fullScreenContentCallback = FullScreenContentCallback(
-              onAdDismissedFullScreenContent: (ad) {
-                hostMeetingFunction();
-                _loadInterstitialAd();
-              },
-            );
-            setState(() {
-              _interstitialAd = ad;
-            });
-          },
-          onAdFailedToLoad: (error) =>
-              debugPrint('Failed to load an interstitial ad: ${error.message}'),
-        ));
-  }
-
   Future<void> _initPackageInfo() async {
     final PackageInfo info = await PackageInfo.fromPlatform();
     setState(() {
@@ -123,8 +79,6 @@ class _HostMettingCardState extends State<HostMeetingCard> {
 
   void dispose() {
     super.dispose();
-    _interstitialAd?.dispose();
-    // JitsiMeet.removeAllListeners();//!previous
     _jitsiMeet.closeChat(); //!Changes
   }
 
@@ -216,27 +170,12 @@ class _HostMettingCardState extends State<HostMeetingCard> {
                     style: CustomTheme.textFieldTitle,
                   ),
                   SizedBox(height: 15.0),
-                  sendInvitation(
-                    context: context,
-                    title:
-                        helper.getTranslated(context, AppTags.sendInvitation)!,
-                    meetingCode: linkMessage,
-                  ),
-                  SizedBox(height: 15.0),
                   GestureDetector(
                       onTap: () async {
-                        if (_interstitialAd != null &&
-                            _rnd.nextInt(100).isEven) {
-                          printLog(
-                              "-----host meeting button: ad not null, ready to show interstital ad.");
-                          //after interstitialAd close joninMeetingFunction will be called from handleAdMobEvent
-                          _interstitialAd?.show();
-                        } else {
-                          // If interstitialAd has not loaded due to any reason simply load hostMeeting Function
-                          hostMeetingFunction();
-                          printLog(
-                              "-----host meeting button: ad null, ready to start a meeting.");
-                        }
+                        // If interstitialAd has not loaded due to any reason simply load hostMeeting Function
+                        hostMeetingFunction();
+                        printLog(
+                            "-----host meeting button: ad null, ready to start a meeting.");
                       },
                       child: HelpMe().submitButton(
                         screnWidth,

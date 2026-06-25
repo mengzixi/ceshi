@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:spagreen/src/models/get_config_model.dart';
 import 'package:spagreen/src/models/user_model.dart';
@@ -26,37 +25,17 @@ class _MeetingScreenState extends State<MeetingScreen> {
   String? appMode;
   String? userRole;
   bool? ismandatoryLogin;
-  InterstitialAd? _interstitialAd;
-  BannerAd? _bannerAd;
   AdsConfig? adsConfig;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
-    BannerAd(
-            size: AdSize.banner,
-            adUnitId: AdHelper.bannerAdId,
-            listener: BannerAdListener(
-              onAdLoaded: (ad) {
-                setState(() {
-                  _bannerAd = ad as BannerAd;
-                });
-              },
-              onAdFailedToLoad: (ad, error) {
-                debugPrint('Failed to load a banner ad: ${error.message}');
-                ad.dispose();
-              },
-            ),
-            request: const AdRequest())
-        .load();
   }
 
   @override
   void dispose() {
     _pageController!.dispose();
-    _bannerAd?.dispose();
-    _interstitialAd?.dispose();
     super.dispose();
   }
 
@@ -78,13 +57,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
           ],
         ),
       ),
-      bottomSheet: _bannerAd != null
-          ? SizedBox(
-              width: _bannerAd!.size.width.toDouble(),
-              height: _bannerAd!.size.height.toDouble(),
-              child: AdWidget(ad: _bannerAd!),
-            )
-          : SizedBox(),
+      bottomSheet: SizedBox(),
     );
   }
 

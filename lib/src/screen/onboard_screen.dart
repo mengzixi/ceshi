@@ -76,7 +76,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
       prevButtonStyle: myButtonStyle(),
       doneButtonStyle: myButtonStyle(),
       onSkipPress: () {
-        Navigator.pushNamed(context, SignUpScreen.route);
+        Navigator.pushNamed(context, MainScreen.route);
       },
       onDonePress: () async {
         await Navigator.pushNamed(context, SignUpScreen.route);

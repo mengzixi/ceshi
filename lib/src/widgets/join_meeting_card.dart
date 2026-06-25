@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-// import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:jitsi_meet_flutter_sdk/jitsi_meet_flutter_sdk.dart';
 import 'package:provider/provider.dart';
 import 'package:spagreen/src/models/get_config_model.dart';
@@ -33,19 +31,6 @@ class _JoinMeetingState extends State<JoinMeeting> {
   TextEditingController nickNameController = new TextEditingController();
   MeetingModel? joinMeetingResponse;
   bool isLoading = false;
-  InterstitialAd? _interstitialAd;
-  //!Previous
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   JitsiMeet.addListener(JitsiMeetingListener(
-  //       onConferenceWillJoin: JitsiMeetUtils().onConferenceWillJoin,
-  //       onConferenceJoined: JitsiMeetUtils().onConferenceJoined,
-  //       onConferenceTerminated: JitsiMeetUtils().onConferenceTerminated,
-  //       onError: JitsiMeetUtils().onError));
-
-  //   _loadInterstitialAd();
-  // }
   final JitsiMeet _jitsiMeet = JitsiMeet();
   //!Changes
   @override
@@ -55,8 +40,6 @@ class _JoinMeetingState extends State<JoinMeeting> {
     AppConfig? appConfig = DatabaseService().getConfigData()?.appConfig;
     // meetingPrefix = appConfig?.meetingPrefix;
     // randomMeetingCode = meetingPrefix! + getRandomString(9);
-    //joinMeeting();
-    _loadInterstitialAd();
   }
 
   Future<void> joinMeeting() async {
@@ -72,30 +55,8 @@ class _JoinMeetingState extends State<JoinMeeting> {
     ));
   }
 
-  void _loadInterstitialAd() {
-    InterstitialAd.load(
-        adUnitId: AdHelper.interstitialAdUnitId,
-        request: const AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (ad) {
-            ad.fullScreenContentCallback = FullScreenContentCallback(
-              onAdDismissedFullScreenContent: (ad) {
-                joinMeetingFunction();
-              },
-            );
-            setState(() {
-              _interstitialAd = ad;
-            });
-          },
-          onAdFailedToLoad: (error) =>
-              debugPrint('Failed to load an interstitial ad: ${error.message}'),
-        ));
-  }
-
   void dispose() {
     super.dispose();
-    _interstitialAd?.dispose();
-    // JitsiMeet.closeMeeting();
   }
 
   @override
@@ -183,14 +144,8 @@ class _JoinMeetingState extends State<JoinMeeting> {
                       GestureDetector(
                           onTap: () async {
                             if (_joinMeetingFormkey.currentState!.validate()) {
-                              if (_interstitialAd != null &&
-                                  _rnd.nextInt(100).isEven) {
-                                //after ads close joninMeetingFunction will be called from handleAdMobEvent
-                                _interstitialAd?.show();
-                              } else {
-                                // If interstitialAd has not loaded due to any reason simply load hostMeeting Function
-                                joinMeetingFunction();
-                              }
+                              // If interstitialAd has not loaded due to any reason simply load hostMeeting Function
+                              joinMeetingFunction();
                             }
                             // interstitialAd.isLoaded && _rnd.nextInt(100).isEven;
                             //    interstitialAd.show();
