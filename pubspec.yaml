@@ -20,7 +20,7 @@ environment:
 dependencies:
   after_layout: ^1.1.0
   clipboard: ^2.0.2
-  connectivity_plus: ^7.0.0
+  connectivity_plus: 7.0.0
   convex_bottom_bar: ^3.2.0
   country_calling_code_picker_plus: ^1.0.1
   cupertino_icons: ^1.0.5
