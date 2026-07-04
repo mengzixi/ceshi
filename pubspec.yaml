@@ -36,7 +36,7 @@ dependencies:
   flutter_pagewise: ^2.0.1
   flutter_spinkit: ^5.1.0
   fluttertoast: ^9.0.0
-  google_fonts: ^4.0.1
+  google_fonts: ^6.3.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   image_picker: ^1.2.0
