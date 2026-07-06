@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:spagreen/src/style/theme.dart';
 import 'package:spagreen/src/utils/app_tags.dart';
 import '../utils/localization_helper.dart' as helper;
@@ -18,7 +17,6 @@ Widget sendInvitation({
           "${helper.getTranslated(context!, AppTags.joinMeetingWith)}${appName ?? ''}\n"
           "${helper.getTranslated(context, AppTags.joinFromWeb)}${joinWebUrl ?? ''}\n"
           "${helper.getTranslated(context, AppTags.joinFromApp)} ${meetingCode ?? ''}";
-      Share.share(shareText);
     },
     child: Container(
       height: 45.0,

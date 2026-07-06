@@ -381,7 +381,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				MARKETING_VERSION = 1.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.anaranar.meetair;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spagreen.meetair;
 				PRODUCT_NAME = "Meet Air";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -521,7 +521,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				MARKETING_VERSION = 1.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.anaranar.meetair;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spagreen.meetair;
 				PRODUCT_NAME = "Meet Air";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -555,7 +555,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				MARKETING_VERSION = 1.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.anaranar.meetair;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spagreen.meetair;
 				PRODUCT_NAME = "Meet Air";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

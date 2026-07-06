@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:spagreen/src/bloc/auth/login_bloc.dart';
 import 'package:spagreen/src/bloc/auth/login_event.dart';
 import 'package:spagreen/src/bloc/auth/login_state.dart';

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:spagreen/src/utils/app_tags.dart';
 import '../services/database_service.dart';
 import '../utils/localization_helper.dart' as helper;
