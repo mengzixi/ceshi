@@ -49,7 +49,7 @@ target 'BroadcastUploadExtension' do
   use_frameworks!
   use_modular_headers!
 
-  pod 'JitsiMeetSDK'
+  pod 'JitsiMeetSDK', '12.1.3'
 end
 
 post_install do |installer|
