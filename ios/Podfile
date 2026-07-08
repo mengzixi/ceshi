@@ -45,9 +45,10 @@ target 'Runner' do
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 
-target 'ScreenShareExtension' do
-   use_frameworks!
+target 'BroadcastUploadExtension' do
+  use_frameworks!
   use_modular_headers!
+
   pod 'JitsiMeetSDK'
 end
 
