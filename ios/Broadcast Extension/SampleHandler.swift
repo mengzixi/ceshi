@@ -8,7 +8,7 @@
 import ReplayKit
 
 private enum Constants {
-    static let appGroupIdentifier = "group.com.anaranar.meetair"
+    static let appGroupIdentifier = "group.com.anaranar.meetair.jitsishare"
 }
 
 class SampleHandler: RPBroadcastSampleHandler {
