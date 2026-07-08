@@ -44,6 +44,9 @@ class JitsiMeetUtils {
       // Platform specific flags
       if (Platform.isAndroid) {
         featureFlags["call-integration.enabled"] = false;
+      } else if (Platform.isIOS) {
+        featureFlags["ios.screensharing.enabled"] = true;
+        featureFlags["screensharing.enabled"] = true;
       }
 
       // Configure meeting options
@@ -54,6 +57,10 @@ class JitsiMeetUtils {
           "startWithAudioMuted": isAudioMuted,
           "startWithVideoMuted": isVideoMuted,
           "startAudioOnly": isAudioOnly,
+          "screenshotCapture": {
+            "enabled": true,
+            "mode": "stream",
+          },
         },
         featureFlags: featureFlags,
         userInfo: JitsiMeetUserInfo(
@@ -115,6 +122,8 @@ class JitsiMeetUtils {
       if (Platform.isAndroid) {
         featureFlags["call-integration.enabled"] = false;
       } else if (Platform.isIOS) {
+        featureFlags["ios.screensharing.enabled"] = true;
+        featureFlags["screensharing.enabled"] = true;
         featureFlags["pip.enabled"] = false;
       }
 
@@ -127,6 +136,10 @@ class JitsiMeetUtils {
           "startWithVideoMuted": isVideoMuted,
           "startAudioOnly": isAudioOnly,
           "subject": meetingTitle ?? "",
+          "screenshotCapture": {
+            "enabled": true,
+            "mode": "stream",
+          },
         },
         featureFlags: featureFlags,
         userInfo: JitsiMeetUserInfo(
@@ -181,6 +194,17 @@ class JitsiMeetUtils {
   // Clean up resources
   void cleanUp() {
     jitsiMeet = null;
+  }
+
+  /// Toggle screen sharing on/off.
+  /// Call this method to programmatically start or stop screen sharing during a meeting.
+  Future<void> toggleScreenShare(bool enabled) async {
+    try {
+      await jitsiMeet?.toggleScreenShare(enabled);
+      debugPrint("Screen sharing toggled: $enabled");
+    } catch (error) {
+      debugPrint("toggleScreenShare error: $error");
+    }
   }
 
   // Call this method when disposing the widget/screen

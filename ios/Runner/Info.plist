@@ -92,5 +92,15 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>RTCAppGroupIdentifier</key>
+	<string>group.com.anaranar.meetair</string>
+	<key>RTCScreenSharingExtension</key>
+	<string>com.anaranar.meetair.BroadcastUploadExtension</string>
+	<key>RPScreenRecordingUsageDescription</key>
+	<string>Meet Air needs access to screen recording for screen sharing during meetings.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>voip</string>
+	</array>
 </dict>
 </plist>
